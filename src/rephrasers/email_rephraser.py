@@ -1,6 +1,7 @@
 import pandas as pd
 from transformers import pipeline, AutoModel, AutoTokenizer, AutoConfig
 from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoModelForMaskedLM
+import torch
 
 from abc import ABC, abstractmethod
 
@@ -16,6 +17,9 @@ class EmailRephraser(ABC):
             self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
         elif self.config.model_type == 'bert':
             self.model = AutoModelForMaskedLM.from_pretrained(model_name)
+        
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(device)
         
         self.generator = pipeline('text-generation', model=self.model_name, tokenizer=self.tokenizer)
 
