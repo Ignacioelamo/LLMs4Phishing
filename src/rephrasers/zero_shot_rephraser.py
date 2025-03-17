@@ -1,4 +1,4 @@
-from EmailRephraser import EmailRephraser
+from rephrasers.email_rephraser import EmailRephraser
 
 class ZeroShotRephraser(EmailRephraser):
     def __init__(self, model_name):
