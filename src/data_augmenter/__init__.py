@@ -1,3 +1,3 @@
-from .DataAugmenter import DataAugmenter
+from .DataAugmenter import DatasetAugmenter
 
-__all__ = ['DataAugmenter']
+__all__ = ['DatasetAugmenter']
