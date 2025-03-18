@@ -19,11 +19,13 @@ class DatasetAugmenter:
                 raise ValueError("Invalid mode. Choose 'zero_shot' or 'few_shot'.")
 
             rephrased_email = self.rephraser.rephrase_email(prompt)
+            subject = rephrased_email.split("Subject: ")[1].split("\n")[0] if "Subject: " in rephrased_email else "No Subject"
+            body = rephrased_email.split("Body: ")[1] if "Body: " in rephrased_email else "No Body"
             self.augmented_data.append({
-                "subject": rephrased_email.split("Subject: ")[1].split("\n")[0],
+                "subject": subject,
                 "sender": row['sender'],
                 "receiver": row['receiver'],
-                "body": rephrased_email.split("Body: ")[1]
+                "body": body
             })
 
         augmented_df = pd.DataFrame(self.augmented_data)
