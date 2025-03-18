@@ -13,7 +13,7 @@ class EmailRephraser(ABC):
         
         self.generator = pipeline('text2text-generation', model=self.model_name, device=device)
 
-    def rephrase_email(self, prompt, max_length=100):
+    def rephrase_email(self, prompt, max_length=512):
         output = self.generator(prompt, max_length=max_length, num_return_sequences=1)
         return output[0]['generated_text']
     
