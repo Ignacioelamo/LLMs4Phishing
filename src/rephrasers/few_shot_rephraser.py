@@ -1,16 +1,24 @@
-from .base_rephraser import BaseRephraser
-from typing import Tuple
+from rephrasers.email_rephraser import EmailRephraser
 
-class FewShotRephraser(BaseRephraser):
-    """Few-shot email rephraser."""
-    
-    def __init__(self, llm_handler, prompt_template: str, generation_config: dict):
-        super().__init__(llm_handler)
-        self.prompt_template = prompt_template
-        self.generation_config = generation_config
-    
-    def rephrase(self, subject: str, body: str) -> Tuple[str, str]:
-        """Rephrase the email using few-shot prompting."""
-        prompt = self.prompt_template.format(subject=subject, body=body)
-        output = self.llm_handler.generate(prompt, self.generation_config)
-        return self.parse_output(output)
+class FewShotRephraser(EmailRephraser):
+    def __init__(self, model_name, few_shot_examples):
+        super().__init__(model_name)
+        self.few_shot_examples = few_shot_examples
+
+    def generate_few_shot_prompt(self, email_data):
+        """Generate a few-shot prompt for rephrasing."""
+        prompt = f"""
+        Below are some examples of rephrased phishing emails. Please rephrase the following email in a similar way.
+
+        Examples:
+        {self.few_shot_examples}
+
+        Original Email:
+        Subject: {email_data['subject']}
+        Sender: {email_data['sender']}
+        Receiver: {email_data['receiver']}
+        Body: {email_data['body']}
+
+        Rephrased Email:
+        """
+        return prompt
