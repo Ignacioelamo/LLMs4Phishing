@@ -1,5 +1,8 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from bitsandbytes import BitsAndBytesConfig
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig
+)
 import torch
 
 class EmailRephraser:
