@@ -4,6 +4,9 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
+from huggingface_hub import login
+import getpass
+
 
 class EmailRephraser:
     """
@@ -28,6 +31,11 @@ class EmailRephraser:
             torch_dtype (torch.dtype): Data type for computations (e.g., torch.float16).
         """
         # Define quantization configuration
+
+        token = getpass.getpass("Enter your Hugging Face token: ")
+        login(token=token)
+
+
         self.quantization_config = None
         if quantization == "4bit":
             self.quantization_config = BitsAndBytesConfig(
